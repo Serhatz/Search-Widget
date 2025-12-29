@@ -1,0 +1,59 @@
+@use 'sass:list';
+@use 'variables' as *;
+
+// Glassmorphism effect with softer blur
+@mixin glass-effect {
+    background: $bg-secondary;
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid $border-color;
+}
+
+// Focus ring
+@mixin focus-ring {
+    outline: none;
+    border-color: $border-focus;
+    box-shadow: $shadow-ambient, $shadow-soft, $shadow-medium, $shadow-glow,
+        0 0 0 4px $accent-glow;
+}
+
+// Flex center
+@mixin flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+// Transition shorthand using modern Sass
+@mixin smooth-transition($properties...) {
+    $transitions: (
+    );
+
+@each $property in $properties {
+    $transitions: list.append($transitions, $property $animation-duration $animation-easing, comma);
+}
+
+transition: $transitions;
+}
+
+// Icon button reset
+@mixin icon-button {
+    @include flex-center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 8px;
+    color: $text-secondary;
+    @include smooth-transition(color, background-color, transform);
+
+    &:hover {
+        color: $text-primary;
+        background: $bg-hover;
+        transform: scale(1.05);
+    }
+
+    &:active {
+        transform: scale(0.95);
+    }
+}

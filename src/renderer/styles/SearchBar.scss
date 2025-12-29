@@ -1,0 +1,180 @@
+@use 'sass:color';
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.search-container {
+    width: 100%;
+    padding: 20px;
+    opacity: 0;
+    transform: scale(0.94) translateY(-12px);
+    filter: blur(4px);
+    @include smooth-transition(opacity, transform, filter);
+
+    &.visible {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        filter: blur(0);
+    }
+
+    &.hiding {
+        opacity: 0;
+        transform: scale(0.94) translateY(-12px);
+        filter: blur(4px);
+    }
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: $padding-vertical $padding-horizontal;
+    background: var(--bg-secondary);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid var(--border-color);
+    border-radius: $border-radius;
+    box-shadow:
+        var(--shadow-ambient),
+        var(--shadow-soft),
+        var(--shadow-medium),
+        var(--shadow-glow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    @include smooth-transition(box-shadow, border-color, transform);
+
+    &:focus-within {
+        border-color: var(--border-focus);
+        transform: scale(1.01);
+        box-shadow:
+            var(--shadow-ambient),
+            var(--shadow-soft),
+            var(--shadow-medium),
+            0 0 80px var(--accent-glow),
+            0 0 0 4px var(--accent-glow),
+            inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    &.has-match {
+        border-color: var(--accent-primary);
+    }
+}
+
+.search-icon {
+    @include flex-center;
+    flex-shrink: 0;
+    color: var(--accent-primary);
+    opacity: 0.9;
+
+    svg {
+        width: 24px;
+        height: 24px;
+        filter: drop-shadow(0 0 8px var(--accent-glow));
+    }
+
+    .shortcut-type-icon {
+        font-size: 22px;
+    }
+}
+
+.shortcut-preview {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    background: var(--accent-glow);
+    border: 1px solid var(--accent-primary);
+    border-radius: 8px;
+    animation: fadeIn 150ms ease;
+
+    .shortcut-target {
+        font-size: 13px;
+        color: var(--text-secondary);
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .enter-hint {
+        font-size: 14px;
+        color: var(--accent-primary);
+        font-weight: $font-weight-medium;
+    }
+}
+
+.search-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: $font-family;
+    font-size: $font-size-input;
+    font-weight: $font-weight-normal;
+    color: var(--text-primary);
+    caret-color: var(--accent-primary);
+    letter-spacing: 0.01em;
+
+    &::placeholder {
+        color: var(--text-placeholder);
+        opacity: 0.8;
+    }
+
+    &::selection {
+        background: var(--accent-glow);
+    }
+}
+
+.clear-button {
+    @include icon-button;
+    flex-shrink: 0;
+    color: var(--text-secondary);
+    opacity: 0;
+    animation: fadeIn 200ms ease forwards;
+
+    svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    &:hover {
+        color: var(--text-primary);
+        background: var(--bg-hover);
+    }
+}
+
+.shortcut-hint {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: $font-size-hint;
+    color: var(--text-placeholder);
+    user-select: none;
+    opacity: 0.7;
+
+    span {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 3px 8px;
+        background: var(--bg-hover);
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        font-size: 10px;
+        font-weight: $font-weight-medium;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.85);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
